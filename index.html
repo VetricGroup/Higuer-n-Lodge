@@ -1,970 +1,543 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<!--
+  Higuerón Lodge — Bajos del Toro, Costa Rica
+  Sitio bilingüe ES/EN. Build de previsualización (un solo archivo).
+
+  PENDIENTES PARA PRODUCCIÓN:
+  - Tailwind: este archivo usa el Play CDN para que renderice solo. Antes de
+    publicar, pasá a un build real (CLI/Vite/PostCSS).
+  - Fotos: reemplazá las imágenes de Unsplash (marcadas "FOTO:") por las reales.
+    Usé las categorías que pasaste (Sala, Cocina, Baño, Patio, Exterior, Jacuzzi).
+  - WhatsApp: cambiá la constante WHATSAPP por el número real (ver al final).
+  - Airbnb: el link ya apunta a tu anuncio (room 1066204865059498186). Si cada
+    cabaña tiene su propio anuncio, agregalos en el array CABINS.
+  - Formulario: conectá un endpoint real (Formspree/Netlify/API) — ver "FORM ENDPOINT".
+  - Confirmá nombres/diferencias reales de cada una de las 3 cabañas (hoy van como I/II/III).
+-->
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurion - Luxury Resort</title>
+    <title data-i18n="meta.title">Higuerón Lodge — Cabañas de montaña en Bajos del Toro, Costa Rica</title>
+    <meta name="description" data-i18n-attr="content" data-i18n="meta.desc" content="Tres cabañas privadas de montaña en Bajos del Toro, Costa Rica. Naturaleza, río, cataratas y jacuzzi. Desconectá y respirá. #ComeAndBreathe">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="canonical" href="https://higueronlodge.example.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Higuerón Lodge">
+    <meta property="og:title" data-i18n-attr="content" data-i18n="meta.title" content="Higuerón Lodge — Bajos del Toro, Costa Rica">
+    <meta property="og:description" data-i18n-attr="content" data-i18n="meta.desc" content="Tres cabañas privadas de montaña en Bajos del Toro, Costa Rica.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1200&q=80">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a0a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23fff' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #ffffff;
-        }
-        
-        .font-serif {
-            font-family: 'Playfair Display', serif;
-        }
-
-        /* Ocultar barra de desplazamiento manteniendo la funcionalidad */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* ============================================================================
-           ESTILOS AVANZADOS PARA ANIMACIONES PREMIUM
-           Scroll Snapping Magnético | 3D Inmersivo | Fade-Up Escalonado | Parallax
-           ============================================================================ */
-
-        /* ─────────────────────────────────────────────────────────────────────────
-           1. SCROLL SNAPPING MAGNÉTICO
-           ───────────────────────────────────────────────────────────────────────── */
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        main {
-            scroll-snap-type: y mandatory;
-            scroll-padding-top: 0;
-        }
-
-        main > section {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-        }
-
-        /* Suavizar el snap con deceleration curve */
-        @supports (scroll-snap-type: y mandatory) {
-            main {
-                scroll-behavior: smooth;
-                scroll-snap-type: y mandatory;
-            }
-        }
-
-        footer {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-        }
-
-
-        /* ─────────────────────────────────────────────────────────────────────────
-           2. ANIMACIÓN 3D INMERSIVA EN CONTENEDORES
-           ───────────────────────────────────────────────────────────────────────── */
-
-        /* Contenedores 3D base */
-        .perspective-container {
-            perspective: 1200px;
-            transform-style: preserve-3d;
-        }
-
-        .immersive-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform: 
-                rotateX(0deg) 
-                rotateY(0deg) 
-                scale(1) 
-                translateZ(0);
-        }
-
-        .immersive-3d.scroll-in {
-            animation: immersive-reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        /* Animación 3D: entrada desde perspectiva y ajuste */
-        @keyframes immersive-reveal {
-            0% {
-                opacity: 0;
-                transform: 
-                    rotateX(15deg) 
-                    rotateY(-8deg) 
-                    scale(0.95) 
-                    translateZ(-100px)
-                    translateY(40px);
-            }
-            50% {
-                opacity: 0.7;
-            }
-            100% {
-                opacity: 1;
-                transform: 
-                    rotateX(0deg) 
-                    rotateY(0deg) 
-                    scale(1) 
-                    translateZ(0)
-                    translateY(0);
-            }
-        }
-
-        /* Efecto 3D dinámico mientras scrollea */
-        .immersive-3d.is-scrolling {
-            animation: none;
-            transform: 
-                rotateX(var(--rotate-x, 0deg))
-                rotateY(var(--rotate-y, 0deg))
-                scale(var(--scale, 1))
-                translateZ(var(--translate-z, 0px));
-        }
-
-        /* Contenedores de imágenes específicas */
-        .image-container-3d {
-            transform-style: preserve-3d;
-            position: relative;
-        }
-
-        .image-container-3d img {
-            transform-style: preserve-3d;
-            will-change: transform;
-        }
-
-
-        /* ─────────────────────────────────────────────────────────────────────────
-           3. FADE-UP ESCALONADO (REVEAL CON SISTEMA DE DELAYS)
-           ───────────────────────────────────────────────────────────────────────── */
-
-        /* Base para elementos reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1),
-                        transform 0.8s cubic-bezier(0.5, 0, 0, 1);
-            will-change: opacity, transform;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Diferenciación visual según el tipo de elemento */
-        .reveal.text-reveal {
-            transition: opacity 0.7s cubic-bezier(0.5, 0, 0, 1),
-                        transform 0.7s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        .reveal.card-reveal {
-            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-                        transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .reveal.image-reveal {
-            transition: opacity 0.9s cubic-bezier(0.5, 0, 0, 1),
-                        transform 0.9s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        /* Sistema de retrasos escalonados (100ms, 200ms, 300ms, 400ms, 500ms) */
-        .delay-100 {
-            transition-delay: 100ms;
-        }
-
-        .delay-200 {
-            transition-delay: 200ms;
-        }
-
-        .delay-300 {
-            transition-delay: 300ms;
-        }
-
-        .delay-400 {
-            transition-delay: 400ms;
-        }
-
-        .delay-500 {
-            transition-delay: 500ms;
-        }
-
-        /* Delays adicionales para cascadas más complejas */
-        .delay-150 {
-            transition-delay: 150ms;
-        }
-
-        .delay-250 {
-            transition-delay: 250ms;
-        }
-
-        .delay-350 {
-            transition-delay: 350ms;
-        }
-
-        .delay-450 {
-            transition-delay: 450ms;
-        }
-
-        /* Variación de easing para diferentes tipos de reveal */
-        .reveal.ease-in-out {
-            transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-        }
-
-        .reveal.ease-out-bounce {
-            transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .reveal.ease-in-cubic {
-            transition-timing-function: cubic-bezier(0.32, 0, 0.67, 0);
-        }
-
-
-        /* ─────────────────────────────────────────────────────────────────────────
-           4. PARALLAX SUTIL
-           ───────────────────────────────────────────────────────────────────────── */
-
-        /* Contenedor parallax base */
-        .parallax-container {
-            position: relative;
-            overflow: hidden;
-            will-change: transform;
-        }
-
-        /* Imagen con efecto parallax */
-        .parallax-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            will-change: transform;
-            transform: translate3d(0, 0, 0); /* enable GPU acceleration */
-        }
-
-        .parallax-image.active {
-            /* El transform será controlado por JavaScript */
-            transform: translate3d(0, var(--parallax-offset, 0px), 0);
-        }
-
-        /* Overlay parallax (opcional) */
-        .parallax-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            will-change: transform;
-            transform: translate3d(0, 0, 0);
-        }
-
-        .parallax-overlay.active {
-            transform: translate3d(0, var(--parallax-offset-overlay, 0px), 0);
-        }
-
-        /* Variación de velocidad parallax */
-        .parallax-slow {
-            --parallax-speed: 0.5;
-        }
-
-        .parallax-normal {
-            --parallax-speed: 0.6;
-        }
-
-        .parallax-fast {
-            --parallax-speed: 0.7;
-        }
-
-        /* Efecto parallax en secciones hero específicas */
-        section:first-of-type img {
-            /* Será controlado por el script */
-        }
-
-
-        /* ─────────────────────────────────────────────────────────────────────────
-           COMBINACIONES Y OPTIMIZACIONES
-           ───────────────────────────────────────────────────────────────────────── */
-
-        /* Elementos que combinan fade-up con 3D */
-        .reveal.immersive-3d {
-            opacity: 0;
-            transform: 
-                translateY(30px)
-                rotateX(15deg)
-                scale(0.95);
-        }
-
-        .reveal.immersive-3d.active {
-            opacity: 1;
-            transform: 
-                translateY(0)
-                rotateX(0deg)
-                scale(1);
-        }
-
-        /* Optimizaciones de rendimiento */
-        .immersive-3d,
-        .parallax-image,
-        .reveal.card-reveal {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            -webkit-perspective: 1000;
-            perspective: 1000;
-        }
-
-        /* Suavizado de tipografía durante transformaciones */
-        .immersive-3d,
-        .parallax-image,
-        .reveal.card-reveal {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Transiciones suaves en navegación */
-        body {
-            scroll-behavior: smooth;
-        }
-
-        @supports (scroll-behavior: smooth) {
-            html {
-                scroll-behavior: smooth;
-            }
-        }
-
-        /* Reducir motion para usuarios que lo prefieren */
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #fff; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 100; background:#fff; color:#000; padding:.6rem 1rem; border-radius:.5rem; transition: top .2s; }
+        .skip-link:focus { top: 1rem; }
+        .icn { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+        .reveal.in { opacity: 1; transform: none; }
         @media (prefers-reduced-motion: reduce) {
-            .reveal,
-            .immersive-3d,
-            .parallax-image,
-            main {
-                animation: none !important;
-                transition: none !important;
-                scroll-behavior: auto !important;
-                scroll-snap-type: none !important;
-            }
-        }
-
-        /* Soporte para dispositivos táctiles */
-        @media (hover: none) and (pointer: coarse) {
-            .immersive-3d {
-                /* Animaciones más suaves en mobile */
-                transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+            * { animation-duration: .01ms !important; }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-black">
 
+    <a href="#main" class="skip-link" data-i18n="a11y.skip">Saltar al contenido</a>
+
+    <!-- Iconos (símbolos reutilizables) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="i-jacuzzi" viewBox="0 0 24 24"><path d="M3 13h18M5 13V7a2 2 0 0 1 4 0M4 13v4a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4M8 6.5l-.5.8M11 6l-.5.8M14 6.5l-.5.8"/></symbol>
+        <symbol id="i-kitchen" viewBox="0 0 24 24"><path d="M6 3v7M9 3v7a3 3 0 0 1-6 0M6 12v9M18 3c-1.7 0-3 2-3 5s1 4 3 4 3-1 3-4-1.3-5-3-5ZM18 12v9"/></symbol>
+        <symbol id="i-bath" viewBox="0 0 24 24"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3ZM6 12V6a2 2 0 0 1 4 0M6 19l-1 2M18 19l1 2"/></symbol>
+        <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8 16a5 5 0 0 1 8 0M12 20h.01"/></symbol>
+        <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 22v-5M12 17l-4-3M12 14l3-2M17 9a5 5 0 1 0-10 0 4 4 0 0 0 .5 8h9a4 4 0 0 0 .5-8Z"/></symbol>
+        <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7M6 10v9h12v-9M10 19v-5h4v5"/></symbol>
+        <symbol id="i-key" viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0-3.5 4L13 13.5V16h2v2h2l2-2v-2l-2-2-1.5-1.5A4 4 0 0 0 14 7Z"/></symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3ZM9 12l2 2 4-4"/></symbol>
+        <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z" fill="currentColor" stroke="none"/></symbol>
+        <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11ZM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></symbol>
+        <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3Z"/><path d="M8.5 8.5c0 4 3 6.8 6.5 7 .8 0 1.5-1 1.5-1.6 0-.3-1.8-1.2-2.1-1.2-.3 0-.6.6-.9.6-.6 0-2.4-1.6-2.4-2.3 0-.3.6-.5.6-.9 0-.3-.9-2.1-1.2-2.1-.5 0-1.6.7-1.6 1.5Z"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    </svg>
+
+    <!-- Navegación -->
     <nav class="fixed top-0 left-0 w-full p-4 flex justify-between items-center z-50">
-        <div class="text-white font-medium text-lg tracking-wide drop-shadow-md">Aurion</div>
+        <a href="#main" class="text-white font-serif text-xl tracking-wide drop-shadow-md">Higuerón Lodge</a>
         <div class="flex items-center gap-3">
-            <button class="bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors">
-                Book Now
-            </button>
-            <button class="bg-white text-black w-10 h-10 rounded-full flex flex-col justify-center items-center gap-1 hover:bg-gray-100 transition-colors">
-                <span class="block w-4 h-[1.5px] bg-black"></span>
-                <span class="block w-4 h-[1.5px] bg-black"></span>
-            </button>
+            <div class="flex items-center bg-black/40 backdrop-blur-md rounded-full p-0.5 text-xs" role="group" aria-label="Language / Idioma">
+                <button data-lang="es" class="lang-btn px-3 py-1.5 rounded-full transition-colors" aria-pressed="true">ES</button>
+                <button data-lang="en" class="lang-btn px-3 py-1.5 rounded-full transition-colors" aria-pressed="false">EN</button>
+            </div>
+            <a href="#reservar" class="bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors" data-i18n="nav.book">Reservar</a>
         </div>
     </nav>
 
-    <main>
+    <main id="main">
+        <!-- Hero -->
         <section class="relative h-[100svh] w-full bg-black">
-            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Aurion Architecture" class="absolute inset-0 w-full h-full object-cover opacity-80">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-12 left-0 w-full px-6 flex justify-center">
-                <h1 class="font-serif text-[5rem] leading-none tracking-tight text-white drop-shadow-lg reveal active">Aurion</h1>
+            <!-- FOTO: portada (Exterior / bosque) -->
+            <img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1400&q=80" width="1400" height="2100" data-i18n-attr="alt" data-i18n="alt.hero" alt="Cabaña de montaña rodeada de bosque en Bajos del Toro" class="absolute inset-0 w-full h-full object-cover opacity-80">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/30"></div>
+            <div class="absolute bottom-14 left-0 w-full px-6 flex flex-col items-center text-center">
+                <div class="flex items-center gap-1.5 mb-5 bg-black/40 backdrop-blur-md px-4 py-1.5 rounded-full text-sm">
+                    <svg class="icn text-amber-300" style="width:16px;height:16px"><use href="#i-star"/></svg>
+                    <span class="font-medium">4,94</span>
+                    <a href="https://www.airbnb.co.cr/rooms/1066204865059498186/reviews" target="_blank" rel="noopener" class="text-gray-300 underline-offset-2 hover:underline"><span data-i18n="hero.reviews">105 reseñas en Airbnb</span></a>
+                </div>
+                <h1 class="font-serif text-[clamp(2.8rem,15vw,5.5rem)] leading-none tracking-tight drop-shadow-lg">Higuerón Lodge</h1>
+                <p class="mt-4 text-sm tracking-[0.18em] uppercase text-gray-200 drop-shadow" data-i18n="hero.tagline">Cabañas de montaña · Bajos del Toro, Costa Rica</p>
+                <p class="mt-2 font-serif italic text-lg text-gray-100">#ComeAndBreathe</p>
             </div>
         </section>
 
-        <section class="px-6 py-20 pb-32 max-w-3xl mx-auto">
-            <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300 mb-8 reveal">
-                About
-            </div>
-            <h2 class="font-serif text-5xl leading-tight mb-6 reveal delay-100">A Sanctuary<br>for Wellness &<br>Rejuvenation</h2>
-            <p class="text-gray-300 text-base leading-relaxed mb-16 reveal delay-200">
-                From private fitness studios to guided meditation sessions, our amenities are designed to enhance your well-being and foster a sense of harmony.
+        <!-- About -->
+        <section class="px-6 py-20 pb-28 max-w-3xl mx-auto reveal">
+            <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300 mb-8" data-i18n="about.eyebrow">Nosotros</div>
+            <h2 class="font-serif text-[clamp(2rem,8vw,3rem)] leading-tight mb-6" data-i18n="about.title">Donde la naturaleza y la calma se encuentran</h2>
+            <p class="text-gray-300 text-base leading-relaxed mb-6" data-i18n="about.body1">
+                Higuerón Lodge son tres cabañas privadas y modernas en Bajos del Toro, pensadas para el bienestar físico y mental que trae el contacto directo con la naturaleza. Cada cabaña ofrece vistas al bosque y un entorno tranquilo para relajarse y reconectar.
             </p>
-            
-            <div class="relative h-[450px] w-full mt-10 reveal delay-300 immersive-3d">
-                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute right-0 top-0 w-[80%] h-[350px] object-cover rounded-3xl z-0">
-                <div class="absolute right-4 top-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-xs z-10">Est. 1844</div>
-                <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute left-0 bottom-0 w-[75%] h-[300px] object-cover rounded-3xl z-10 shadow-2xl">
+            <p class="text-gray-300 text-base leading-relaxed" data-i18n="about.body2">
+                Junto a las cabañas, un sendero baja hacia un río cercano para que te dejes llevar por los sonidos del bosque. Estamos cerca de senderos de hiking y de las cataratas más populares de la zona: el refugio ideal para quienes buscan tranquilidad y aventura al aire libre.
+            </p>
+
+            <div class="relative h-[450px] w-full mt-12">
+                <!-- FOTO: Exterior -->
+                <img src="https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=600&q=80" width="600" height="350" loading="lazy" decoding="async" data-i18n-attr="alt" data-i18n="alt.about1" alt="Bosque nuboso alrededor del lodge" class="absolute right-0 top-0 w-[80%] h-[350px] object-cover rounded-3xl z-0">
+                <div class="absolute right-4 top-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-xs z-10 flex items-center gap-1.5">
+                    <svg class="icn" style="width:14px;height:14px"><use href="#i-pin"/></svg> Bajos del Toro · CR
+                </div>
+                <!-- FOTO: Jacuzzi -->
+                <img src="https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?auto=format&fit=crop&w=600&q=80" width="600" height="300" loading="lazy" decoding="async" data-i18n-attr="alt" data-i18n="alt.about2" alt="Jacuzzi al aire libre con vista al bosque" class="absolute left-0 bottom-0 w-[75%] h-[300px] object-cover rounded-3xl z-10 shadow-2xl">
             </div>
         </section>
 
-        <section class="px-6 py-16 max-w-3xl mx-auto">
-            <div class="flex justify-center mb-6 reveal">
-                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
-                    Rooms & Suites
-                </div>
+        <!-- Cabañas -->
+        <section id="cabanas" class="px-6 py-16 max-w-3xl mx-auto scroll-mt-20 reveal">
+            <div class="flex justify-center mb-6">
+                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300" data-i18n="cabins.eyebrow">Las cabañas</div>
             </div>
-            <h2 class="font-serif text-4xl text-center mb-4 reveal delay-100">Featured Rooms</h2>
-            <p class="text-center text-gray-300 text-sm mb-12 reveal delay-200">Each room is a sanctuary of refined comfort,<br>designed with meticulous attention to detail.</p>
-
-            <div class="flex flex-col gap-12">
-                <div class="reveal delay-100 immersive-3d">
-                    <div class="relative w-full h-[300px] mb-6">
-                        <img src="https://images.unsplash.com/photo-1582719478250-c89404dc8a08?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover rounded-3xl">
-                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs">Guest Favourite</div>
-                    </div>
-                    <h3 class="font-serif text-3xl mb-2">The Grand Suite</h3>
-                    <p class="text-gray-300 text-sm mb-3">Panoramic, Terrace, Italian</p>
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>Beds: 2</span>
-                        <span>Baths: 2</span>
-                        <span>Sqft: 1450</span>
-                    </div>
-                </div>
-
-                <div class="reveal delay-200 immersive-3d">
-                    <div class="relative w-full h-[300px] mb-6">
-                        <img src="https://images.unsplash.com/photo-1600607688969-a5bfcd64bd0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover rounded-3xl">
-                    </div>
-                    <h3 class="font-serif text-3xl mb-2">Ocean Pavilion</h3>
-                    <p class="text-gray-300 text-sm mb-3">Oceanfront, Serene, Bright</p>
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>Beds: 1</span>
-                        <span>Baths: 1</span>
-                        <span>Sqft: 980</span>
-                    </div>
-                </div>
-            </div>
+            <h2 class="font-serif text-4xl text-center mb-4" data-i18n="cabins.title">Tres refugios privados</h2>
+            <p class="text-center text-gray-300 text-sm mb-12 max-w-md mx-auto" data-i18n="cabins.sub">Cada cabaña es un espacio exclusivo con vista al bosque. Misma esencia, total privacidad.</p>
+            <div id="cabins-grid" class="flex flex-col gap-12"></div>
         </section>
 
-        <section class="py-16 overflow-hidden">
-            <div class="px-6 max-w-3xl mx-auto flex justify-center mb-6 reveal">
-                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
-                    Amenities
-                </div>
+        <!-- Amenidades -->
+        <section class="px-6 py-16 max-w-3xl mx-auto reveal">
+            <div class="flex justify-center mb-6">
+                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300" data-i18n="amen.eyebrow">Comodidades</div>
             </div>
-            <h2 class="font-serif text-4xl text-center mb-4 px-6 reveal delay-100">World-Class<br>Experiences</h2>
-            <p class="text-center text-gray-300 text-sm mb-12 px-10 reveal delay-200">Every detail has been considered to create moments of extraordinary comfort and indulgence.</p>
-
-            <div class="w-full px-6 reveal delay-300 immersive-3d">
-                <div class="w-full h-[400px] mb-6">
-                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover rounded-3xl">
-                </div>
-                <h3 class="font-serif text-3xl mb-2">Infinity Pool</h3>
-                <p class="text-gray-300 text-sm">Heated oceanfront pool with panoramic sunset views</p>
-            </div>
+            <h2 class="font-serif text-4xl text-center mb-4" data-i18n="amen.title">Todo lo que necesitás</h2>
+            <p class="text-center text-gray-300 text-sm mb-12" data-i18n="amen.sub">Desde jacuzzi y cocina completa hasta wifi y zona de trabajo, sin perder el espíritu del bosque.</p>
+            <div id="amen-grid" class="grid sm:grid-cols-2 gap-5"></div>
         </section>
 
-        <section class="px-6 py-16 max-w-3xl mx-auto">
-            <div class="flex justify-center mb-6 reveal">
-                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
-                    Journeys
-                </div>
+        <!-- Entorno / Experiencias -->
+        <section class="px-6 py-16 max-w-3xl mx-auto reveal">
+            <div class="flex justify-center mb-6">
+                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300" data-i18n="around.eyebrow">El entorno</div>
             </div>
-            <h2 class="font-serif text-4xl text-center mb-4 reveal delay-100">The Journeys</h2>
-            <p class="text-center text-gray-300 text-sm mb-12 reveal delay-200">Exclusive experiences curated for Aurion guests — from cloud forests to volcanic coastlines across Costa Rica's most breathtaking landscapes.</p>
-
+            <h2 class="font-serif text-4xl text-center mb-4" data-i18n="around.title">Bajos del Toro</h2>
+            <p class="text-center text-gray-300 text-sm mb-12" data-i18n="around.sub">Un valle de montaña entre bosque, cascadas y aire limpio — una de las joyas escondidas de Costa Rica.</p>
             <div class="flex flex-col gap-6">
-                <div class="relative w-full h-[450px] rounded-3xl overflow-hidden group reveal delay-100 immersive-3d">
-                    <img src="https://images.unsplash.com/photo-1518182170546-076616fdcbdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover">
+                <article class="relative w-full h-[420px] rounded-3xl overflow-hidden">
+                    <!-- FOTO: catarata / hiking -->
+                    <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80" width="800" height="420" loading="lazy" decoding="async" data-i18n-attr="alt" data-i18n="alt.around1" alt="Catarata en el bosque de Bajos del Toro" class="absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
                         <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10">
-                            <h3 class="font-serif text-2xl mb-2">Cloud Forest Expedition</h3>
-                            <p class="text-gray-200 text-sm leading-relaxed">A private guided trek through Monteverde's misty canopy — hanging bridges, rare wildlife encounters, and a chef-prepared dinner in a hidden clearing.</p>
+                            <h3 class="font-serif text-2xl mb-2" data-i18n="around.c1.name">Cataratas y senderos</h3>
+                            <p class="text-gray-200 text-sm leading-relaxed" data-i18n="around.c1.desc">La zona es famosa por sus cataratas y rutas de hiking entre bosque nuboso. Salí a explorar y volvé a la cabaña a descansar.</p>
                         </div>
                     </div>
-                </div>
-
-                <div class="relative w-full h-[450px] rounded-3xl overflow-hidden group reveal delay-200 immersive-3d">
-                    <img src="https://images.unsplash.com/photo-1621831818962-d9f2c69cb121?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover">
+                </article>
+                <article class="relative w-full h-[420px] rounded-3xl overflow-hidden">
+                    <!-- FOTO: río -->
+                    <img src="https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?auto=format&fit=crop&w=800&q=80" width="800" height="420" loading="lazy" decoding="async" data-i18n-attr="alt" data-i18n="alt.around2" alt="Río de montaña cercano al lodge" class="absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
                         <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10">
-                            <h3 class="font-serif text-2xl mb-2">Volcanic Hot Springs</h3>
-                            <p class="text-gray-200 text-sm leading-relaxed">Exclusive access to secluded thermal pools fed by Arenal Volcano, paired with a volcanic mud ritual and open-air massage.</p>
+                            <h3 class="font-serif text-2xl mb-2" data-i18n="around.c2.name">El río, a unos pasos</h3>
+                            <p class="text-gray-200 text-sm leading-relaxed" data-i18n="around.c2.desc">Un sendero propio baja desde las cabañas hasta el río. El sonido del agua es parte de la estadía.</p>
                         </div>
                     </div>
-                </div>
+                </article>
             </div>
         </section>
 
-        <section class="px-6 py-16 max-w-3xl mx-auto">
-            <div class="bg-[#111111] rounded-[2rem] p-8 border border-white/5 reveal">
-                <div class="flex justify-center mb-6">
-                    <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
-                        Contact
-                    </div>
+        <!-- Reseñas -->
+        <section class="px-6 py-16 max-w-3xl mx-auto reveal">
+            <div class="bg-[#111] rounded-[2rem] p-8 border border-white/5 text-center">
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <svg class="icn text-amber-300" style="width:26px;height:26px"><use href="#i-star"/></svg>
+                    <span class="font-serif text-4xl">4,94</span>
                 </div>
-                <h2 class="font-serif text-4xl text-center mb-4">Book Your Stay</h2>
-                <p class="text-center text-gray-300 text-sm mb-8 px-4">Let us help you plan the perfect getaway. Our concierge team is available to assist with reservations and special requests.</p>
+                <p class="text-gray-300 text-sm mb-8"><span data-i18n="rev.count">105 reseñas</span> · Airbnb</p>
+                <div id="rev-grid" class="grid sm:grid-cols-3 gap-4 mb-8 text-left"></div>
+                <a href="https://www.airbnb.co.cr/rooms/1066204865059498186/reviews" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm border border-white/20 rounded-full px-5 py-2.5 hover:bg-white/10 transition-colors">
+                    <span data-i18n="rev.cta">Leer las reseñas en Airbnb</span>
+                    <svg class="icn" style="width:16px;height:16px"><use href="#i-arrow"/></svg>
+                </a>
+            </div>
+        </section>
 
-                <form class="flex flex-col gap-4">
-                    <input type="text" placeholder="Full Name" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
-                    <input type="email" placeholder="Email Address" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
-                    <input type="tel" placeholder="Phone Number" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
-                    <input type="text" placeholder="Preferred Dates" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
-                    <textarea placeholder="Special Requests or Questions" rows="4" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all resize-none"></textarea>
-                    
-                    <button type="submit" class="w-full bg-white text-black font-medium py-4 rounded-xl mt-2 hover:bg-gray-100 transition-colors">
-                        Send Inquiry
-                    </button>
+        <!-- Lo que debes saber -->
+        <section class="px-6 py-16 max-w-3xl mx-auto reveal">
+            <div class="flex justify-center mb-6">
+                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300" data-i18n="know.eyebrow">Antes de reservar</div>
+            </div>
+            <h2 class="font-serif text-4xl text-center mb-4" data-i18n="know.title">Lo que debes saber</h2>
+            <p class="text-center text-gray-300 text-sm mb-10 max-w-lg mx-auto" data-i18n="know.sub">Somos un alojamiento tipo Airbnb en zona rural de montaña, no un hotel. Eso es parte de la experiencia — y queremos que llegués sabiendo exactamente qué esperar.</p>
+            <ul id="know-list" class="flex flex-col gap-3 mb-12"></ul>
+
+            <div class="grid sm:grid-cols-2 gap-4" id="policy-grid"></div>
+        </section>
+
+        <!-- Mapa -->
+        <section class="px-6 py-16 max-w-3xl mx-auto reveal">
+            <div class="flex items-center gap-2 justify-center mb-6 text-gray-300">
+                <svg class="icn" style="width:18px;height:18px"><use href="#i-pin"/></svg>
+                <span class="text-xs uppercase tracking-[0.18em]" data-i18n="map.eyebrow">Cómo llegar</span>
+            </div>
+            <h2 class="font-serif text-4xl text-center mb-8" data-i18n="map.title">Bajos del Toro, Alajuela</h2>
+            <div class="rounded-3xl overflow-hidden border border-white/10 h-[360px]">
+                <iframe title="Mapa de Bajos del Toro" class="w-full h-full" style="border:0; filter: grayscale(0.3) contrast(1.05);" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Bajos%20del%20Toro%2C%20Costa%20Rica&output=embed"></iframe>
+            </div>
+        </section>
+
+        <!-- Reservar / Contacto -->
+        <section id="reservar" class="px-6 py-16 max-w-3xl mx-auto scroll-mt-20 reveal">
+            <div class="bg-[#111] rounded-[2rem] p-8 border border-white/5">
+                <div class="flex justify-center mb-6">
+                    <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300" data-i18n="book.eyebrow">Reservá</div>
+                </div>
+                <h2 class="font-serif text-4xl text-center mb-4" data-i18n="book.title">Tu escapada empieza acá</h2>
+                <p class="text-center text-gray-300 text-sm mb-8 px-2" data-i18n="book.sub">Reservá directo en Airbnb, escribinos por WhatsApp o dejanos tu consulta. Te respondemos pronto.</p>
+
+                <div class="flex flex-col sm:flex-row gap-3 mb-8">
+                    <a href="https://www.airbnb.co.cr/rooms/1066204865059498186" target="_blank" rel="noopener" class="flex-1 flex items-center justify-center gap-2 bg-white text-black font-medium py-4 rounded-xl hover:bg-gray-100 transition-colors">
+                        <span data-i18n="book.airbnb">Reservar en Airbnb</span>
+                        <svg class="icn" style="width:16px;height:16px"><use href="#i-arrow"/></svg>
+                    </a>
+                    <a id="wa-btn-inline" href="#" target="_blank" rel="noopener" class="flex-1 flex items-center justify-center gap-2 border border-white/20 py-4 rounded-xl hover:bg-white/10 transition-colors">
+                        <svg class="icn" style="width:18px;height:18px"><use href="#i-wa"/></svg>
+                        <span data-i18n="book.whatsapp">Escribir por WhatsApp</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4 mb-8 text-xs text-gray-500">
+                    <div class="flex-1 h-px bg-white/10"></div>
+                    <span data-i18n="book.or">o dejanos tu consulta</span>
+                    <div class="flex-1 h-px bg-white/10"></div>
+                </div>
+
+                <!-- FORM ENDPOINT: reemplazá action y quitá el preventDefault del JS demo -->
+                <form id="booking-form" novalidate class="flex flex-col gap-4" action="#" method="post">
+                    <div>
+                        <label for="f-name" class="sr-only" data-i18n="form.name">Nombre completo</label>
+                        <input id="f-name" name="name" type="text" required autocomplete="name" data-i18n-attr="placeholder" data-i18n="form.name" placeholder="Nombre completo" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-white/40 transition-all">
+                    </div>
+                    <div>
+                        <label for="f-email" class="sr-only" data-i18n="form.email">Correo electrónico</label>
+                        <input id="f-email" name="email" type="email" required autocomplete="email" data-i18n-attr="placeholder" data-i18n="form.email" placeholder="Correo electrónico" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-white/40 transition-all">
+                    </div>
+                    <div>
+                        <label for="f-dates" class="sr-only" data-i18n="form.dates">Fechas tentativas</label>
+                        <input id="f-dates" name="dates" type="text" data-i18n-attr="placeholder" data-i18n="form.dates" placeholder="Fechas tentativas" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-white/40 transition-all">
+                    </div>
+                    <div>
+                        <label for="f-msg" class="sr-only" data-i18n="form.msg">Tu mensaje</label>
+                        <textarea id="f-msg" name="message" rows="4" data-i18n-attr="placeholder" data-i18n="form.msg" placeholder="Contanos sobre tu visita" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-white/40 transition-all resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-white text-black font-medium py-4 rounded-xl mt-1 hover:bg-gray-100 transition-colors" data-i18n="form.submit">Enviar consulta</button>
+                    <p id="form-status" role="status" aria-live="polite" class="text-center text-sm min-h-[1.25rem]"></p>
                 </form>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white text-black w-full min-h-screen px-6 py-24 flex flex-col justify-center">
-        <h2 class="font-serif text-[4.5rem] leading-none tracking-tight mb-12 reveal">Aurion</h2>
-        
-        <ul class="flex flex-col gap-6 font-medium text-lg">
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-100">
-                <span class="text-sm">></span> Rooms & Suites
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-100">
-                <span class="text-sm">></span> Dining
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-200">
-                <span class="text-sm">></span> Amenities
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity mt-4 reveal delay-200">
-                <span class="text-sm">></span> Journeys
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-300">
-                <span class="text-sm">></span> Spa & Wellness
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-300">
-                <span class="text-sm">></span> Events
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity mt-4 reveal delay-400">
-                <span class="text-sm">></span> Book Now
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-400">
-                <span class="text-sm">></span> Location
-            </li>
-            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-400">
-                <span class="text-sm">></span> Contact Us
-            </li>
-        </ul>
+    <footer class="bg-white text-black w-full px-6 py-20">
+        <h2 class="font-serif text-[clamp(2.5rem,12vw,4rem)] leading-none tracking-tight mb-3">Higuerón Lodge</h2>
+        <p class="font-serif italic text-lg mb-10 text-gray-700">#ComeAndBreathe</p>
+        <nav aria-label="Footer" class="mb-12">
+            <ul class="flex flex-col gap-4 font-medium text-base">
+                <li><a href="#cabanas" class="inline-flex items-center gap-3 hover:opacity-60 transition-opacity"><svg class="icn" style="width:15px;height:15px"><use href="#i-arrow"/></svg> <span data-i18n="foot.cabins">Las cabañas</span></a></li>
+                <li><a href="#reservar" class="inline-flex items-center gap-3 hover:opacity-60 transition-opacity"><svg class="icn" style="width:15px;height:15px"><use href="#i-arrow"/></svg> <span data-i18n="nav.book">Reservar</span></a></li>
+                <li><a href="https://www.airbnb.co.cr/rooms/1066204865059498186" target="_blank" rel="noopener" class="inline-flex items-center gap-3 hover:opacity-60 transition-opacity"><svg class="icn" style="width:15px;height:15px"><use href="#i-arrow"/></svg> Airbnb</a></li>
+            </ul>
+        </nav>
+        <p class="text-sm text-gray-500">Bajos del Toro, Alajuela, Costa Rica · © <span id="yr"></span> Higuerón Lodge</p>
     </footer>
 
+    <!-- WhatsApp flotante -->
+    <a id="wa-float" href="#" target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+        <svg class="icn" style="width:26px;height:26px"><use href="#i-wa"/></svg>
+    </a>
+
     <script>
-        /* ============================================================================
-           JAVASCRIPT AVANZADO - ANIMACIONES PREMIUM SIN LIBRERÍAS
-           Vanilla JS | Intersection Observer | Scroll Listeners
-           ============================================================================ */
+    (function () {
+        // ===== CONFIG =====
+        const WHATSAPP = "50600000000"; // <-- reemplazá por el número real (formato internacional, sin +)
+        const AIRBNB = "https://www.airbnb.co.cr/rooms/1066204865059498186";
 
-        document.addEventListener("DOMContentLoaded", () => {
-            // ─────────────────────────────────────────────────────────────────────
-            // 1. CONFIGURACIÓN GLOBAL
-            // ─────────────────────────────────────────────────────────────────────
-            
-            const config = {
-                revealThreshold: 0.15,
-                parallaxSpeed: 0.5,
-                parallaxElements: [],
-                immersive3DElements: [],
-                scrollElements: [],
-            };
+        const CABINS = [
+            { n: "I",   img: "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?auto=format&fit=crop&w=800&q=80" },
+            { n: "II",  img: "https://images.unsplash.com/photo-1551927336-09d50efd69cd?auto=format&fit=crop&w=800&q=80" },
+            { n: "III", img: "https://images.unsplash.com/photo-1586375300773-8384e3e4916f?auto=format&fit=crop&w=800&q=80" }
+        ];
 
-            // ─────────────────────────────────────────────────────────────────────
-            // 2. FADE-UP ESCALONADO CON INTERSECTION OBSERVER
-            // ─────────────────────────────────────────────────────────────────────
-            
-            function initRevealAnimations() {
-                const observerOptions = {
-                    root: null,
-                    rootMargin: '0px',
-                    threshold: config.revealThreshold, // Elemento debe estar 15% visible
-                };
+        const AMEN = [
+            { icon: "i-jacuzzi", k: "am.jacuzzi" },
+            { icon: "i-kitchen", k: "am.kitchen" },
+            { icon: "i-bath",    k: "am.bath" },
+            { icon: "i-wifi",    k: "am.wifi" },
+            { icon: "i-tree",    k: "am.outdoor" },
+            { icon: "i-home",    k: "am.comfort" },
+            { icon: "i-key",     k: "am.arrival" },
+            { icon: "i-shield",  k: "am.safety" }
+        ];
 
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            // Agregar clase 'active' para disparar CSS
-                            entry.target.classList.add('active');
-                            
-                            // Opcional: descomenta para que la animación ocurra solo una vez
-                            // observer.unobserve(entry.target);
-                        } else {
-                            // Opcional: remueve la clase para reiniciar al salir del viewport
-                            // entry.target.classList.remove('active');
-                        }
-                    });
-                }, observerOptions);
-
-                // Seleccionar todos los elementos con clase 'reveal'
-                const revealElements = document.querySelectorAll('.reveal');
-                revealElements.forEach(el => {
-                    observer.observe(el);
-                    config.scrollElements.push(el);
-                });
-
-                return observer;
+        const I18N = {
+            es: {
+                "meta.title": "Higuerón Lodge — Cabañas de montaña en Bajos del Toro, Costa Rica",
+                "meta.desc": "Tres cabañas privadas de montaña en Bajos del Toro, Costa Rica. Naturaleza, río, cataratas y jacuzzi. Desconectá y respirá. #ComeAndBreathe",
+                "a11y.skip": "Saltar al contenido",
+                "nav.book": "Reservar",
+                "hero.reviews": "105 reseñas en Airbnb",
+                "hero.tagline": "Cabañas de montaña · Bajos del Toro, Costa Rica",
+                "about.eyebrow": "Nosotros",
+                "about.title": "Donde la naturaleza y la calma se encuentran",
+                "about.body1": "Higuerón Lodge son tres cabañas privadas y modernas en Bajos del Toro, pensadas para el bienestar físico y mental que trae el contacto directo con la naturaleza. Cada cabaña ofrece vistas al bosque y un entorno tranquilo para relajarse y reconectar.",
+                "about.body2": "Junto a las cabañas, un sendero baja hacia un río cercano para que te dejes llevar por los sonidos del bosque. Estamos cerca de senderos de hiking y de las cataratas más populares de la zona: el refugio ideal para quienes buscan tranquilidad y aventura al aire libre.",
+                "cabins.eyebrow": "Las cabañas", "cabins.title": "Tres refugios privados",
+                "cabins.sub": "Cada cabaña es un espacio exclusivo con vista al bosque. Misma esencia, total privacidad.",
+                "cabins.name": "Cabaña", "cabins.specs": "2 huéspedes · 1 cama · 1 baño",
+                "cabins.feat": "Vista al bosque · Jacuzzi · Cocina completa",
+                "amen.eyebrow": "Comodidades", "amen.title": "Todo lo que necesitás",
+                "amen.sub": "Desde jacuzzi y cocina completa hasta wifi y zona de trabajo, sin perder el espíritu del bosque.",
+                "am.jacuzzi": "Jacuzzi|Relajate al aire libre rodeado de naturaleza.",
+                "am.kitchen": "Cocina completa|Refrigerador, microondas, congelador, cafetera, vajilla, copas de vino y mesa de comedor.",
+                "am.bath": "Baño completo|Agua caliente, secadora de pelo, champú, acondicionador y gel de ducha.",
+                "am.wifi": "Wifi y trabajo|Conexión wifi y una zona de trabajo privada para los días de oficina.",
+                "am.outdoor": "Espacio exterior|Patio, jardín, lugar para fogata y parrilla compartida.",
+                "am.comfort": "Confort|Televisión, calefacción, ventiladores y ropa de cama y toallas incluidas.",
+                "am.arrival": "Llegada autónoma|Caja de seguridad con llaves, parqueo gratis y guardado de equipaje.",
+                "am.safety": "Seguridad|Cámaras en el exterior y extintor. Ideal también para estadías largas (28+ días).",
+                "around.eyebrow": "El entorno", "around.title": "Bajos del Toro",
+                "around.sub": "Un valle de montaña entre bosque, cascadas y aire limpio — una de las joyas escondidas de Costa Rica.",
+                "around.c1.name": "Cataratas y senderos",
+                "around.c1.desc": "La zona es famosa por sus cataratas y rutas de hiking entre bosque nuboso. Salí a explorar y volvé a la cabaña a descansar.",
+                "around.c2.name": "El río, a unos pasos",
+                "around.c2.desc": "Un sendero propio baja desde las cabañas hasta el río. El sonido del agua es parte de la estadía.",
+                "rev.count": "105 reseñas",
+                "rev.h1": "Espacio exterior increíble", "rev.t1": "Los huéspedes destacan el jardín y la terraza.",
+                "rev.h2": "Llegada autónoma", "rev.t2": "Entrada fácil con caja de seguridad para llaves.",
+                "rev.h3": "Zona pintoresca", "rev.t3": "A los huéspedes les encanta la ubicación panorámica.",
+                "rev.cta": "Leer las reseñas en Airbnb",
+                "know.eyebrow": "Antes de reservar", "know.title": "Lo que debes saber",
+                "know.sub": "Somos un alojamiento tipo Airbnb en zona rural de montaña, no un hotel. Eso es parte de la experiencia — y queremos que llegués sabiendo exactamente qué esperar.",
+                "know.1": "Zona rural y remota de montaña, rodeada de bosque. La tranquilidad es total.",
+                "know.2": "Puede haber lluvia intensa, neblina o tormentas, sobre todo en temporada verde.",
+                "know.3": "De forma eventual pueden ocurrir cortes de luz o internet, propios de zonas rurales en Costa Rica.",
+                "know.4": "Al estar en medio de la naturaleza, es normal la presencia ocasional de insectos, pese a la limpieza y fumigación regular.",
+                "know.5": "No contamos con aire acondicionado, lavadora ni detectores de humo / monóxido de carbono.",
+                "pol.checkin.t": "Check-in", "pol.checkin.d": "De 3:00 p.m. a 11:00 p.m. · llegada autónoma con caja de llaves.",
+                "pol.checkout.t": "Check-out", "pol.checkout.d": "Antes de las 11:00 a.m.",
+                "pol.guests.t": "Huéspedes", "pol.guests.d": "Máximo 2 personas por cabaña.",
+                "pol.cancel.t": "Cancelación", "pol.cancel.d": "Cancelación gratuita las primeras 24 h. Consultá la política completa en Airbnb.",
+                "map.eyebrow": "Cómo llegar", "map.title": "Bajos del Toro, Alajuela",
+                "book.eyebrow": "Reservá", "book.title": "Tu escapada empieza acá",
+                "book.sub": "Reservá directo en Airbnb, escribinos por WhatsApp o dejanos tu consulta. Te respondemos pronto.",
+                "book.airbnb": "Reservar en Airbnb", "book.whatsapp": "Escribir por WhatsApp", "book.or": "o dejanos tu consulta",
+                "form.name": "Nombre completo", "form.email": "Correo electrónico", "form.dates": "Fechas tentativas",
+                "form.msg": "Contanos sobre tu visita", "form.submit": "Enviar consulta",
+                "form.ok": "¡Gracias! Recibimos tu consulta y te responderemos pronto.",
+                "form.err": "Por favor completá tu nombre y un correo válido.",
+                "foot.cabins": "Las cabañas",
+                "wa.msg": "¡Hola! Me interesa hospedarme en Higuerón Lodge.",
+                "alt.hero": "Cabaña de montaña rodeada de bosque en Bajos del Toro",
+                "alt.about1": "Bosque alrededor del lodge",
+                "alt.about2": "Jacuzzi al aire libre con vista al bosque",
+                "alt.around1": "Catarata en el bosque de Bajos del Toro",
+                "alt.around2": "Río de montaña cercano al lodge",
+                "alt.cabin": "Interior de cabaña"
+            },
+            en: {
+                "meta.title": "Higuerón Lodge — Mountain cabins in Bajos del Toro, Costa Rica",
+                "meta.desc": "Three private mountain cabins in Bajos del Toro, Costa Rica. Nature, a river, waterfalls and a hot tub. Disconnect and breathe. #ComeAndBreathe",
+                "a11y.skip": "Skip to content",
+                "nav.book": "Book",
+                "hero.reviews": "105 reviews on Airbnb",
+                "hero.tagline": "Mountain cabins · Bajos del Toro, Costa Rica",
+                "about.eyebrow": "About",
+                "about.title": "Where nature and calm meet",
+                "about.body1": "Higuerón Lodge is three private, modern cabins in Bajos del Toro, built around the physical and mental wellbeing that comes from direct contact with nature. Each cabin has forest views and a quiet setting to relax and reconnect.",
+                "about.body2": "A trail next to the cabins leads down to a nearby river so you can lose yourself in the sounds of the forest. We're close to hiking trails and the area's most popular waterfalls — the ideal retreat for those seeking both calm and outdoor adventure.",
+                "cabins.eyebrow": "The cabins", "cabins.title": "Three private retreats",
+                "cabins.sub": "Each cabin is a private space with forest views. Same spirit, complete privacy.",
+                "cabins.name": "Cabin", "cabins.specs": "2 guests · 1 bed · 1 bath",
+                "cabins.feat": "Forest view · Hot tub · Full kitchen",
+                "amen.eyebrow": "Amenities", "amen.title": "Everything you need",
+                "amen.sub": "From a hot tub and full kitchen to wifi and a workspace, without losing the spirit of the forest.",
+                "am.jacuzzi": "Hot tub|Unwind outdoors, surrounded by nature.",
+                "am.kitchen": "Full kitchen|Fridge, microwave, freezer, coffee maker, dishware, wine glasses and dining table.",
+                "am.bath": "Full bathroom|Hot water, hair dryer, shampoo, conditioner and shower gel.",
+                "am.wifi": "Wifi & work|Wifi and a private workspace for the working days.",
+                "am.outdoor": "Outdoor space|Patio, garden, fire pit and shared grill.",
+                "am.comfort": "Comfort|TV, heating, fans, plus linens and towels included.",
+                "am.arrival": "Self check-in|Key lockbox, free parking and luggage drop-off.",
+                "am.safety": "Safety|Exterior cameras and a fire extinguisher. Great for long stays too (28+ days).",
+                "around.eyebrow": "The surroundings", "around.title": "Bajos del Toro",
+                "around.sub": "A mountain valley of forest, waterfalls and clean air — one of Costa Rica's hidden gems.",
+                "around.c1.name": "Waterfalls & trails",
+                "around.c1.desc": "The area is known for its waterfalls and hiking routes through cloud forest. Head out to explore, then come back to rest.",
+                "around.c2.name": "The river, steps away",
+                "around.c2.desc": "A private trail leads from the cabins down to the river. The sound of the water is part of the stay.",
+                "rev.count": "105 reviews",
+                "rev.h1": "Amazing outdoor space", "rev.t1": "Guests highlight the garden and terrace.",
+                "rev.h2": "Self check-in", "rev.t2": "Easy arrival with a key lockbox.",
+                "rev.h3": "Scenic area", "rev.t3": "Guests love the panoramic location.",
+                "rev.cta": "Read the reviews on Airbnb",
+                "know.eyebrow": "Before you book", "know.title": "What you should know",
+                "know.sub": "We're an Airbnb-style stay in a rural mountain area, not a hotel. That's part of the experience — and we want you to arrive knowing exactly what to expect.",
+                "know.1": "A remote, rural mountain area surrounded by forest. The quiet is complete.",
+                "know.2": "Heavy rain, fog or storms can occur, especially in the green season.",
+                "know.3": "Occasional power or internet outages may happen — typical of rural Costa Rica.",
+                "know.4": "Being in the middle of nature, the occasional insect is normal, despite regular cleaning and fumigation.",
+                "know.5": "We don't have air conditioning, a washer, or smoke / carbon-monoxide detectors.",
+                "pol.checkin.t": "Check-in", "pol.checkin.d": "3:00 p.m. to 11:00 p.m. · self check-in with key lockbox.",
+                "pol.checkout.t": "Check-out", "pol.checkout.d": "Before 11:00 a.m.",
+                "pol.guests.t": "Guests", "pol.guests.d": "Maximum 2 guests per cabin.",
+                "pol.cancel.t": "Cancellation", "pol.cancel.d": "Free cancellation within the first 24 h. See the full policy on Airbnb.",
+                "map.eyebrow": "Getting here", "map.title": "Bajos del Toro, Alajuela",
+                "book.eyebrow": "Book", "book.title": "Your escape starts here",
+                "book.sub": "Book directly on Airbnb, message us on WhatsApp, or send us a quick inquiry. We'll get back to you soon.",
+                "book.airbnb": "Book on Airbnb", "book.whatsapp": "Message on WhatsApp", "book.or": "or send us an inquiry",
+                "form.name": "Full name", "form.email": "Email address", "form.dates": "Tentative dates",
+                "form.msg": "Tell us about your visit", "form.submit": "Send inquiry",
+                "form.ok": "Thank you! We've received your inquiry and will reply soon.",
+                "form.err": "Please enter your name and a valid email.",
+                "foot.cabins": "The cabins",
+                "wa.msg": "Hi! I'm interested in staying at Higuerón Lodge.",
+                "alt.hero": "Mountain cabin surrounded by forest in Bajos del Toro",
+                "alt.about1": "Forest around the lodge",
+                "alt.about2": "Outdoor hot tub with forest view",
+                "alt.around1": "Waterfall in the Bajos del Toro forest",
+                "alt.around2": "Mountain river near the lodge",
+                "alt.cabin": "Cabin interior"
             }
+        };
 
-            // ─────────────────────────────────────────────────────────────────────
-            // 3. ANIMACIÓN 3D INMERSIVA EN CONTENEDORES
-            // ─────────────────────────────────────────────────────────────────────
-            
-            function initImmersive3D() {
-                // Seleccionar elementos con clase 'immersive-3d'
-                const immersive3DElements = document.querySelectorAll('.immersive-3d, .image-container-3d');
-                
-                const observerOptions = {
-                    root: null,
-                    rootMargin: '100px',
-                    threshold: [0, 0.3, 0.6, 1.0],
-                };
+        let lang = "es";
+        const $ = s => document.querySelector(s);
+        const t = k => (I18N[lang][k] != null ? I18N[lang][k] : k);
 
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            // Aplicar animación de entrada 3D
-                            entry.target.classList.add('scroll-in');
-                            
-                            // Calcular rotación basada en posición en viewport
-                            const rect = entry.boundingClientRect;
-                            const elementCenter = rect.top + rect.height / 2;
-                            const viewportCenter = window.innerHeight / 2;
-                            const distance = elementCenter - viewportCenter;
-                            const ratio = distance / viewportCenter;
+        function waLink() {
+            return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t("wa.msg"));
+        }
 
-                            // Aplicar variables CSS para transformación dinámica
-                            entry.target.style.setProperty(
-                                '--rotate-x',
-                                `${Math.max(Math.min(ratio * 10, 10), -10)}deg`
-                            );
-                            entry.target.style.setProperty(
-                                '--scale',
-                                `${Math.max(Math.min(1 + ratio * 0.1, 1.1), 0.9)}`
-                            );
+        function renderDynamic() {
+            // Cabañas
+            $("#cabins-grid").innerHTML = CABINS.map(c => `
+                <article>
+                    <div class="relative w-full h-[300px] mb-5">
+                        <img src="${c.img}" width="800" height="600" loading="lazy" decoding="async" alt="${t('alt.cabin')} ${c.n}" class="w-full h-full object-cover rounded-3xl">
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs">${t('cabins.name')} ${c.n}</div>
+                    </div>
+                    <h3 class="font-serif text-3xl mb-2">${t('cabins.name')} ${c.n}</h3>
+                    <p class="text-gray-300 text-sm mb-3">${t('cabins.feat')}</p>
+                    <p class="text-xs text-gray-400">${t('cabins.specs')}</p>
+                </article>`).join("");
 
-                            config.immersive3DElements.push(entry.target);
-                        }
-                    });
-                }, observerOptions);
+            // Amenidades
+            $("#amen-grid").innerHTML = AMEN.map(a => {
+                const [title, desc] = t(a.k).split("|");
+                return `<div class="bg-[#111] rounded-2xl p-5 border border-white/5 flex gap-4">
+                    <svg class="icn text-gray-200 shrink-0 mt-0.5"><use href="#${a.icon}"/></svg>
+                    <div><h3 class="font-medium mb-1">${title}</h3><p class="text-gray-400 text-sm leading-relaxed">${desc}</p></div>
+                </div>`;
+            }).join("");
 
-                immersive3DElements.forEach(el => observer.observe(el));
-                return observer;
-            }
+            // Reseñas (highlights reales de Airbnb)
+            const rev = [["rev.h1","rev.t1"],["rev.h2","rev.t2"],["rev.h3","rev.t3"]];
+            $("#rev-grid").innerHTML = rev.map(([h,d]) => `
+                <div class="bg-[#0a0a0a] rounded-2xl p-5 border border-white/5">
+                    <h3 class="font-medium mb-1.5 text-sm">${t(h)}</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">${t(d)}</p>
+                </div>`).join("");
 
-            // ─────────────────────────────────────────────────────────────────────
-            // 4. PARALLAX SUTIL EN IMÁGENES DE FONDO
-            // ─────────────────────────────────────────────────────────────────────
-            
-            function initParallax() {
-                // Seleccionar elementos parallax
-                const parallaxElements = document.querySelectorAll(
-                    '.parallax-image, section:first-of-type img, [data-parallax]'
-                );
+            // Lo que debes saber
+            $("#know-list").innerHTML = ["know.1","know.2","know.3","know.4","know.5"].map(k => `
+                <li class="flex gap-3 text-gray-300 text-sm leading-relaxed">
+                    <span class="text-gray-500 mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-gray-500"></span>${t(k)}
+                </li>`).join("");
 
-                config.parallaxElements = Array.from(parallaxElements);
+            // Políticas
+            const pol = [["pol.checkin.t","pol.checkin.d"],["pol.checkout.t","pol.checkout.d"],["pol.guests.t","pol.guests.d"],["pol.cancel.t","pol.cancel.d"]];
+            $("#policy-grid").innerHTML = pol.map(([h,d]) => `
+                <div class="bg-[#111] rounded-2xl p-5 border border-white/5">
+                    <h3 class="font-medium mb-1 text-sm">${t(h)}</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">${t(d)}</p>
+                </div>`).join("");
+        }
 
-                // Función para actualizar posición parallax
-                function updateParallax() {
-                    const scrollY = window.scrollY;
+        function apply(l) {
+            lang = l;
+            const dict = I18N[l];
+            document.documentElement.lang = l;
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const v = dict[el.getAttribute("data-i18n")];
+                if (v == null) return;
+                const attr = el.getAttribute("data-i18n-attr");
+                if (attr) el.setAttribute(attr, v); else el.textContent = v;
+            });
+            document.querySelectorAll(".lang-btn").forEach(b => {
+                const on = b.dataset.lang === l;
+                b.setAttribute("aria-pressed", on ? "true" : "false");
+                b.style.background = on ? "#fff" : "transparent";
+                b.style.color = on ? "#000" : "#fff";
+            });
+            renderDynamic();
+            const wl = waLink();
+            $("#wa-float").href = wl;
+            $("#wa-btn-inline").href = wl;
+        }
 
-                    config.parallaxElements.forEach(element => {
-                        if (!element) return;
+        document.querySelectorAll(".lang-btn").forEach(b =>
+            b.addEventListener("click", () => apply(b.dataset.lang)));
 
-                        // Calcular si el elemento está en viewport
-                        const rect = element.getBoundingClientRect();
-                        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
-
-                        if (isInView) {
-                            // Calcular offset parallax (más lento que el scroll)
-                            const speed = element.dataset.parallaxSpeed 
-                                ? parseFloat(element.dataset.parallaxSpeed) 
-                                : config.parallaxSpeed;
-
-                            // Distancia del top del elemento al top del viewport
-                            const distanceFromTop = rect.top;
-                            
-                            // Calcular parallax offset
-                            const parallaxOffset = distanceFromTop * speed * -1;
-
-                            // Aplicar transform con GPU acceleration
-                            element.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
-                            element.classList.add('active');
-                        } else {
-                            element.classList.remove('active');
-                        }
-                    });
-                }
-
-                // Optimizar con requestAnimationFrame para mejor rendimiento
-                let ticking = false;
-                window.addEventListener('scroll', () => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(() => {
-                            updateParallax();
-                            ticking = false;
-                        });
-                        ticking = true;
-                    }
-                });
-
-                // Ejecutar una vez al cargar
-                updateParallax();
-            }
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 5. SCROLL SNAPPING MAGNÉTICO (CSS-based, mejorado con JS)
-            // ─────────────────────────────────────────────────────────────────────
-            
-            function initScrollSnap() {
-                // El scroll snap se maneja principalmente en CSS
-                // Este JS proporciona mejoras y feedback
-                
-                const sections = document.querySelectorAll('main > section');
-                let currentSectionIndex = 0;
-
-                function updateActiveSection() {
-                    const scrollPosition = window.scrollY;
-
-                    sections.forEach((section, index) => {
-                        const sectionTop = section.offsetTop;
-                        const sectionHeight = section.offsetHeight;
-
-                        if (scrollPosition >= sectionTop - window.innerHeight / 2 &&
-                            scrollPosition < sectionTop + sectionHeight - window.innerHeight / 2) {
-                            currentSectionIndex = index;
-                            
-                            // Opcional: Agregar clase de debugging
-                            section.dataset.active = 'true';
-                        } else {
-                            section.dataset.active = 'false';
-                        }
-                    });
-                }
-
-                // Throttle para mejor rendimiento
-                let scrollTimeout;
-                window.addEventListener('scroll', () => {
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        updateActiveSection();
-                    }, 16); // ~60fps
-                });
-
-                updateActiveSection();
-            }
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 6. ANIMACIÓN 3D DINÁMICA DURANTE SCROLL
-            // ─────────────────────────────────────────────────────────────────────
-            
-            function initDynamic3DOnScroll() {
-                const dynamic3DElements = document.querySelectorAll('.immersive-3d.is-scrolling');
-
-                function updateDynamic3D() {
-                    const scrollY = window.scrollY;
-
-                    dynamic3DElements.forEach(element => {
-                        const rect = element.getBoundingClientRect();
-                        const elementCenter = rect.top + rect.height / 2;
-                        const viewportCenter = window.innerHeight / 2;
-                        
-                        // Calcular ángulos basados en posición en viewport
-                        const distanceFromCenter = elementCenter - viewportCenter;
-                        const maxDistance = window.innerHeight / 2;
-                        const ratio = Math.max(-1, Math.min(1, distanceFromCenter / maxDistance));
-
-                        // Rotar suavemente alrededor de X e Y
-                        const rotateX = ratio * -20;
-                        const rotateY = ratio * 15;
-                        const scale = 1 - Math.abs(ratio) * 0.05;
-
-                        element.style.setProperty('--rotate-x', `${rotateX}deg`);
-                        element.style.setProperty('--rotate-y', `${rotateY}deg`);
-                        element.style.setProperty('--scale', scale);
-                        element.style.setProperty('--translate-z', `${Math.abs(ratio) * 50}px`);
-                    });
-                }
-
-                // Usar requestAnimationFrame para mejor rendimiento
-                let ticking = false;
-                window.addEventListener('scroll', () => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(() => {
-                            updateDynamic3D();
-                            ticking = false;
-                        });
-                        ticking = true;
-                    }
-                });
-
-                updateDynamic3D();
-            }
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 7. APLICAR CLASES AUTOMÁTICAS A ELEMENTOS
-            // ─────────────────────────────────────────────────────────────────────
-            
-            function autoClassifyElements() {
-                // Agregar clase 'text-reveal' a textos
-                document.querySelectorAll('.reveal h1, .reveal h2, .reveal h3, .reveal p').forEach(el => {
-                    if (!el.classList.contains('text-reveal')) {
-                        el.classList.add('text-reveal');
-                    }
-                });
-
-                // Agregar clase 'card-reveal' a tarjetas
-                document.querySelectorAll(
-                    '.reveal [class*="card"], .reveal [class*="container"], .reveal .relative'
-                ).forEach(el => {
-                    if (!el.classList.contains('card-reveal')) {
-                        el.classList.add('card-reveal');
-                    }
-                });
-
-                // Agregar clase 'image-reveal' a imágenes
-                document.querySelectorAll('.reveal img').forEach(el => {
-                    if (!el.classList.contains('image-reveal')) {
-                        el.classList.add('image-reveal');
-                    }
-                });
-
-                // Aplicar 3D a contenedores de imágenes
-                document.querySelectorAll('[class*="image-container"], [class*="relative"][class*="h-"]').forEach(el => {
-                    if (el.querySelector('img') && !el.classList.contains('image-container-3d')) {
-                        el.classList.add('image-container-3d');
-                        el.classList.add('immersive-3d');
-                    }
-                });
-
-                // Aplicar parallax a hero image
-                const heroImage = document.querySelector('section:first-of-type img');
-                if (heroImage && !heroImage.classList.contains('parallax-image')) {
-                    const heroSection = document.querySelector('section:first-of-type');
-                    heroSection.classList.add('parallax-container');
-                    heroImage.classList.add('parallax-image');
-                    heroImage.dataset.parallaxSpeed = '0.6';
-                }
-            }
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 8. INICIALIZAR TODAS LAS ANIMACIONES
-            // ─────────────────────────────────────────────────────────────────────
-            
-            function init() {
-                // Paso 1: Clasificar elementos automáticamente
-                autoClassifyElements();
-
-                // Paso 2: Inicializar cada sistema de animación
-                console.log('🎬 Inicializando animaciones premium...');
-                
-                try {
-                    initRevealAnimations();
-                    console.log('✓ Fade-up escalonado activado');
-                } catch (error) {
-                    console.error('Error en reveal animations:', error);
-                }
-
-                try {
-                    initImmersive3D();
-                    console.log('✓ Animación 3D inmersiva activada');
-                } catch (error) {
-                    console.error('Error en immersive 3D:', error);
-                }
-
-                try {
-                    initParallax();
-                    console.log('✓ Parallax sutil activado');
-                } catch (error) {
-                    console.error('Error en parallax:', error);
-                }
-
-                try {
-                    initScrollSnap();
-                    console.log('✓ Scroll snapping magnético activado');
-                } catch (error) {
-                    console.error('Error en scroll snap:', error);
-                }
-
-                try {
-                    initDynamic3DOnScroll();
-                    console.log('✓ Animación 3D dinámica en scroll activada');
-                } catch (error) {
-                    console.error('Error en dynamic 3D:', error);
-                }
-
-                console.log('🎨 Todas las animaciones premium están activas');
-            }
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 9. UTILIDADES Y HELPERS
-            // ─────────────────────────────────────────────────────────────────────
-            
-            // Helper para desactivar animaciones en dispositivos con motion reducida
-            function checkReducedMotion() {
-                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                
-                if (prefersReducedMotion) {
-                    document.body.classList.add('reduce-motion');
-                    console.log('⚠️ Modo de movimiento reducido detectado');
-                }
-
-                // Escuchar cambios en preferencia
-                window.matchMedia('(prefers-reduced-motion: reduce)').addListener((mq) => {
-                    if (mq.matches) {
-                        document.body.classList.add('reduce-motion');
-                    } else {
-                        document.body.classList.remove('reduce-motion');
-                    }
-                });
-            }
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 10. PUNTO DE ENTRADA PRINCIPAL
-            // ─────────────────────────────────────────────────────────────────────
-            
-            // Verificar preferencias de motion
-            checkReducedMotion();
-
-            // Inicializar todas las animaciones
-            init();
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 11. EXPORT DE FUNCIONES PARA USO EXTERNO (OPCIONAL)
-            // ─────────────────────────────────────────────────────────────────────
-            
-            // Exponer funciones globales para debugging/customización
-            window.PremiumAnimations = {
-                init,
-                config,
-                updateParallax: () => {
-                    // Forzar actualización de parallax
-                    document.querySelectorAll('.parallax-image').forEach(el => {
-                        const rect = el.getBoundingClientRect();
-                        const distanceFromTop = rect.top;
-                        const parallaxOffset = distanceFromTop * config.parallaxSpeed * -1;
-                        el.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
-                    });
-                },
-                toggleParallax: (enabled) => {
-                    document.querySelectorAll('.parallax-image').forEach(el => {
-                        el.style.transform = enabled ? '' : 'none';
-                    });
-                },
-                toggleScrollSnap: (enabled) => {
-                    document.documentElement.style.scrollSnapType = enabled ? 'y mandatory' : 'none';
-                },
-            };
-
-            // ─────────────────────────────────────────────────────────────────────
-            // 12. MONITOREO DE RENDIMIENTO (OPCIONAL)
-            // ─────────────────────────────────────────────────────────────────────
-            
-            if (window.performance && window.performance.mark) {
-                performance.mark('animations-loaded');
-                if (performance.measure) {
-                    try {
-                        performance.measure('animation-load-time', 'navigationStart', 'animations-loaded');
-                        const measure = performance.getEntriesByName('animation-load-time')[0];
-                        console.log(`📊 Tiempo de carga de animaciones: ${measure.duration.toFixed(2)}ms`);
-                    } catch (e) {
-                        console.log('Medición de rendimiento no disponible');
-                    }
-                }
-            }
+        // Form demo
+        const form = $("#booking-form"), status = $("#form-status");
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+            const name = form.name.value.trim();
+            const email = form.email.value.trim();
+            const ok = name && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+            status.style.color = ok ? "#86efac" : "#fca5a5";
+            status.textContent = ok ? t("form.ok") : t("form.err");
+            if (ok) form.reset();
         });
+
+        // Reveal on scroll
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+        }, { threshold: 0.12 });
+        document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+        $("#yr").textContent = new Date().getFullYear();
+        apply("es");
+    })();
     </script>
 </body>
 </html>
