@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurion - Luxury Resort</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Ocultar barra de desplazamiento manteniendo la funcionalidad */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Clases base para la animación de aparición */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Retrasos escalonados */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <nav class="fixed top-0 left-0 w-full p-4 flex justify-between items-center z-50">
+        <div class="text-white font-medium text-lg tracking-wide drop-shadow-md">Aurion</div>
+        <div class="flex items-center gap-3">
+            <button class="bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors">
+                Book Now
+            </button>
+            <button class="bg-white text-black w-10 h-10 rounded-full flex flex-col justify-center items-center gap-1 hover:bg-gray-100 transition-colors">
+                <span class="block w-4 h-[1.5px] bg-black"></span>
+                <span class="block w-4 h-[1.5px] bg-black"></span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="relative h-[100svh] w-full bg-black">
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Aurion Architecture" class="absolute inset-0 w-full h-full object-cover opacity-80">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-12 left-0 w-full px-6 flex justify-center">
+                <h1 class="font-serif text-[5rem] leading-none tracking-tight text-white drop-shadow-lg reveal active">Aurion</h1>
+            </div>
+        </section>
+
+        <section class="px-6 py-20 pb-32 max-w-3xl mx-auto">
+            <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300 mb-8 reveal">
+                About
+            </div>
+            <h2 class="font-serif text-5xl leading-tight mb-6 reveal delay-100">A Sanctuary<br>for Wellness &<br>Rejuvenation</h2>
+            <p class="text-gray-300 text-base leading-relaxed mb-16 reveal delay-200">
+                From private fitness studios to guided meditation sessions, our amenities are designed to enhance your well-being and foster a sense of harmony.
+            </p>
+            
+            <div class="relative h-[450px] w-full mt-10 reveal delay-300">
+                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute right-0 top-0 w-[80%] h-[350px] object-cover rounded-3xl z-0">
+                <div class="absolute right-4 top-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-xs z-10">Est. 1844</div>
+                <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute left-0 bottom-0 w-[75%] h-[300px] object-cover rounded-3xl z-10 shadow-2xl">
+            </div>
+        </section>
+
+        <section class="px-6 py-16 max-w-3xl mx-auto">
+            <div class="flex justify-center mb-6 reveal">
+                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
+                    Rooms & Suites
+                </div>
+            </div>
+            <h2 class="font-serif text-4xl text-center mb-4 reveal delay-100">Featured Rooms</h2>
+            <p class="text-center text-gray-300 text-sm mb-12 reveal delay-200">Each room is a sanctuary of refined comfort,<br>designed with meticulous attention to detail.</p>
+
+            <div class="flex flex-col gap-12">
+                <div class="reveal delay-100">
+                    <div class="relative w-full h-[300px] mb-6">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89404dc8a08?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover rounded-3xl">
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs">Guest Favourite</div>
+                    </div>
+                    <h3 class="font-serif text-3xl mb-2">The Grand Suite</h3>
+                    <p class="text-gray-300 text-sm mb-3">Panoramic, Terrace, Italian</p>
+                    <div class="flex items-center gap-4 text-xs text-gray-400">
+                        <span>Beds: 2</span>
+                        <span>Baths: 2</span>
+                        <span>Sqft: 1450</span>
+                    </div>
+                </div>
+
+                <div class="reveal delay-200">
+                    <div class="relative w-full h-[300px] mb-6">
+                        <img src="https://images.unsplash.com/photo-1600607688969-a5bfcd64bd0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover rounded-3xl">
+                    </div>
+                    <h3 class="font-serif text-3xl mb-2">Ocean Pavilion</h3>
+                    <p class="text-gray-300 text-sm mb-3">Oceanfront, Serene, Bright</p>
+                    <div class="flex items-center gap-4 text-xs text-gray-400">
+                        <span>Beds: 1</span>
+                        <span>Baths: 1</span>
+                        <span>Sqft: 980</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 overflow-hidden">
+            <div class="px-6 max-w-3xl mx-auto flex justify-center mb-6 reveal">
+                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
+                    Amenities
+                </div>
+            </div>
+            <h2 class="font-serif text-4xl text-center mb-4 px-6 reveal delay-100">World-Class<br>Experiences</h2>
+            <p class="text-center text-gray-300 text-sm mb-12 px-10 reveal delay-200">Every detail has been considered to create moments of extraordinary comfort and indulgence.</p>
+
+            <div class="w-full px-6 reveal delay-300">
+                <div class="w-full h-[400px] mb-6">
+                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover rounded-3xl">
+                </div>
+                <h3 class="font-serif text-3xl mb-2">Infinity Pool</h3>
+                <p class="text-gray-300 text-sm">Heated oceanfront pool with panoramic sunset views</p>
+            </div>
+        </section>
+
+        <section class="px-6 py-16 max-w-3xl mx-auto">
+            <div class="flex justify-center mb-6 reveal">
+                <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
+                    Journeys
+                </div>
+            </div>
+            <h2 class="font-serif text-4xl text-center mb-4 reveal delay-100">The Journeys</h2>
+            <p class="text-center text-gray-300 text-sm mb-12 reveal delay-200">Exclusive experiences curated for Aurion guests — from cloud forests to volcanic coastlines across Costa Rica's most breathtaking landscapes.</p>
+
+            <div class="flex flex-col gap-6">
+                <div class="relative w-full h-[450px] rounded-3xl overflow-hidden group reveal delay-100">
+                    <img src="https://images.unsplash.com/photo-1518182170546-076616fdcbdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10">
+                            <h3 class="font-serif text-2xl mb-2">Cloud Forest Expedition</h3>
+                            <p class="text-gray-200 text-sm leading-relaxed">A private guided trek through Monteverde's misty canopy — hanging bridges, rare wildlife encounters, and a chef-prepared dinner in a hidden clearing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-[450px] rounded-3xl overflow-hidden group reveal delay-200">
+                    <img src="https://images.unsplash.com/photo-1621831818962-d9f2c69cb121?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10">
+                            <h3 class="font-serif text-2xl mb-2">Volcanic Hot Springs</h3>
+                            <p class="text-gray-200 text-sm leading-relaxed">Exclusive access to secluded thermal pools fed by Arenal Volcano, paired with a volcanic mud ritual and open-air massage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-16 max-w-3xl mx-auto">
+            <div class="bg-[#111111] rounded-[2rem] p-8 border border-white/5 reveal">
+                <div class="flex justify-center mb-6">
+                    <div class="inline-block border border-gray-700 rounded-full px-4 py-1 text-xs text-gray-300">
+                        Contact
+                    </div>
+                </div>
+                <h2 class="font-serif text-4xl text-center mb-4">Book Your Stay</h2>
+                <p class="text-center text-gray-300 text-sm mb-8 px-4">Let us help you plan the perfect getaway. Our concierge team is available to assist with reservations and special requests.</p>
+
+                <form class="flex flex-col gap-4">
+                    <input type="text" placeholder="Full Name" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
+                    <input type="email" placeholder="Email Address" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
+                    <input type="tel" placeholder="Phone Number" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
+                    <input type="text" placeholder="Preferred Dates" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all">
+                    <textarea placeholder="Special Requests or Questions" rows="4" class="w-full bg-[#1a1a1a] text-white px-5 py-4 rounded-xl placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all resize-none"></textarea>
+                    
+                    <button type="submit" class="w-full bg-white text-black font-medium py-4 rounded-xl mt-2 hover:bg-gray-100 transition-colors">
+                        Send Inquiry
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white text-black w-full min-h-screen px-6 py-24 flex flex-col justify-center">
+        <h2 class="font-serif text-[4.5rem] leading-none tracking-tight mb-12 reveal">Aurion</h2>
+        
+        <ul class="flex flex-col gap-6 font-medium text-lg">
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-100">
+                <span class="text-sm">></span> Rooms & Suites
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-100">
+                <span class="text-sm">></span> Dining
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-200">
+                <span class="text-sm">></span> Amenities
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity mt-4 reveal delay-200">
+                <span class="text-sm">></span> Journeys
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-300">
+                <span class="text-sm">></span> Spa & Wellness
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-300">
+                <span class="text-sm">></span> Events
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity mt-4 reveal delay-400">
+                <span class="text-sm">></span> Book Now
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-400">
+                <span class="text-sm">></span> Location
+            </li>
+            <li class="flex items-center gap-4 cursor-pointer hover:opacity-70 transition-opacity reveal delay-400">
+                <span class="text-sm">></span> Contact Us
+            </li>
+        </ul>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // El elemento debe estar 15% visible para activar la animación
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Descomenta la siguiente línea si deseas que la animación ocurra solo una vez
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
