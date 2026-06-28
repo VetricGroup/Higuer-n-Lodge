@@ -1,0 +1,326 @@
+/* ============================================================================
+   ESTILOS AVANZADOS PARA ANIMACIONES PREMIUM
+   Scroll Snapping Magnético | 3D Inmersivo | Fade-Up Escalonado | Parallax
+   ============================================================================ */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   1. SCROLL SNAPPING MAGNÉTICO
+   ───────────────────────────────────────────────────────────────────────── */
+
+html {
+    scroll-behavior: smooth;
+}
+
+main {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 0;
+}
+
+main > section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+/* Suavizar el snap con deceleration curve */
+@supports (scroll-snap-type: y mandatory) {
+    main {
+        scroll-behavior: smooth;
+        scroll-snap-type: y mandatory;
+    }
+}
+
+footer {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   2. ANIMACIÓN 3D INMERSIVA EN CONTENEDORES
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Contenedores 3D base */
+.perspective-container {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
+.immersive-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: 
+        rotateX(0deg) 
+        rotateY(0deg) 
+        scale(1) 
+        translateZ(0);
+}
+
+.immersive-3d.scroll-in {
+    animation: immersive-reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Animación 3D: entrada desde perspectiva y ajuste */
+@keyframes immersive-reveal {
+    0% {
+        opacity: 0;
+        transform: 
+            rotateX(15deg) 
+            rotateY(-8deg) 
+            scale(0.95) 
+            translateZ(-100px)
+            translateY(40px);
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+        transform: 
+            rotateX(0deg) 
+            rotateY(0deg) 
+            scale(1) 
+            translateZ(0)
+            translateY(0);
+    }
+}
+
+/* Efecto 3D dinámico mientras scrollea */
+.immersive-3d.is-scrolling {
+    animation: none;
+    transform: 
+        rotateX(var(--rotate-x, 0deg))
+        rotateY(var(--rotate-y, 0deg))
+        scale(var(--scale, 1))
+        translateZ(var(--translate-z, 0px));
+}
+
+/* Contenedores de imágenes específicas */
+.image-container-3d {
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.image-container-3d img {
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   3. FADE-UP ESCALONADO (REVEAL CON SISTEMA DE DELAYS)
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Base para elementos reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1),
+                transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+    will-change: opacity, transform;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Diferenciación visual según el tipo de elemento */
+.reveal.text-reveal {
+    transition: opacity 0.7s cubic-bezier(0.5, 0, 0, 1),
+                transform 0.7s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.card-reveal {
+    transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal.image-reveal {
+    transition: opacity 0.9s cubic-bezier(0.5, 0, 0, 1),
+                transform 0.9s cubic-bezier(0.5, 0, 0, 1);
+}
+
+/* Sistema de retrasos escalonados (100ms, 200ms, 300ms, 400ms, 500ms) */
+.delay-100 {
+    transition-delay: 100ms;
+}
+
+.delay-200 {
+    transition-delay: 200ms;
+}
+
+.delay-300 {
+    transition-delay: 300ms;
+}
+
+.delay-400 {
+    transition-delay: 400ms;
+}
+
+.delay-500 {
+    transition-delay: 500ms;
+}
+
+/* Delays adicionales para cascadas más complejas */
+.delay-150 {
+    transition-delay: 150ms;
+}
+
+.delay-250 {
+    transition-delay: 250ms;
+}
+
+.delay-350 {
+    transition-delay: 350ms;
+}
+
+.delay-450 {
+    transition-delay: 450ms;
+}
+
+/* Variación de easing para diferentes tipos de reveal */
+.reveal.ease-in-out {
+    transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.reveal.ease-out-bounce {
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal.ease-in-cubic {
+    transition-timing-function: cubic-bezier(0.32, 0, 0.67, 0);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   4. PARALLAX SUTIL
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Contenedor parallax base */
+.parallax-container {
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+}
+
+/* Imagen con efecto parallax */
+.parallax-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+    transform: translate3d(0, 0, 0); /* Enable GPU acceleration */
+}
+
+.parallax-image.active {
+    /* El transform será controlado por JavaScript */
+    transform: translate3d(0, var(--parallax-offset, 0px), 0);
+}
+
+/* Overlay parallax (opcional) */
+.parallax-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+.parallax-overlay.active {
+    transform: translate3d(0, var(--parallax-offset-overlay, 0px), 0);
+}
+
+/* Variación de velocidad parallax */
+.parallax-slow {
+    --parallax-speed: 0.5;
+}
+
+.parallax-normal {
+    --parallax-speed: 0.6;
+}
+
+.parallax-fast {
+    --parallax-speed: 0.7;
+}
+
+/* Efecto parallax en secciones hero específicas */
+section:first-of-type img {
+    /* Será controlado por el script */
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   COMBINACIONES Y OPTIMIZACIONES
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Elementos que combinan fade-up con 3D */
+.reveal.immersive-3d {
+    opacity: 0;
+    transform: 
+        translateY(30px)
+        rotateX(15deg)
+        scale(0.95);
+}
+
+.reveal.immersive-3d.active {
+    opacity: 1;
+    transform: 
+        translateY(0)
+        rotateX(0deg)
+        scale(1);
+}
+
+/* Optimizaciones de rendimiento */
+.immersive-3d,
+.parallax-image,
+.reveal.card-reveal {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+}
+
+/* Suavizado de tipografía durante transformaciones */
+.immersive-3d,
+.parallax-image,
+.reveal.card-reveal {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Transiciones suaves en navegación */
+body {
+    scroll-behavior: smooth;
+}
+
+@supports (scroll-behavior: smooth) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Reducir motion para usuarios que lo prefieren */
+@media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .immersive-3d,
+    .parallax-image,
+    main {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+        scroll-snap-type: none !important;
+    }
+}
+
+/* Soporte para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+    .immersive-3d {
+        /* Animaciones más suaves en mobile */
+        transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+}
